@@ -13,8 +13,6 @@ import { LayoutModule } from '../layout/layout.module';
 import { PartialsModule } from '../partials/partials.module';
 import { ComponentsModule } from './components/components.module';
 import { CoreModule } from '../../core/core.module';
-import { LandingPageComponent } from './snippets/landing-page/landing-page.component';
-import { DemoPageComponent } from './snippets/demo-page/demo-page.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -24,8 +22,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     declarations: [
         PagesComponent,
         ErrorPageComponent,
-        LandingPageComponent,
-        DemoPageComponent
     ],
     imports: [
         CommonModule,
