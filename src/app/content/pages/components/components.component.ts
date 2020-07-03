@@ -27,9 +27,6 @@ import { SkinService } from "../../../core/services/skin.service";
           <!-- Display app routes -->
           <router-outlet></router-outlet>
 
-          <!-- App footer -->
-          <app-footer></app-footer>
-
           <!-- App audio player -->
           <app-player></app-player>
         </main>
