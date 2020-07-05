@@ -1,38 +1,123 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
 
-import { AudioPlayerService } from '../../../../core/services/audio-player.service';
+import { AudioPlayerService } from "../../../../core/services/audio-player.service";
 
 @Component({
-    selector: 'app-primary-card',
-    templateUrl: './primary-card.component.html'
+  selector: "app-primary-card",
+  template: `
+    <!-- Begin | Custom Card [[ Find at scss/framework/components/custom-card/custom-card.scss ]] -->
+    <div class="custom-card">
+      <div [class]="classes">
+        <!-- Begin | Custom Card Info -->
+        <div class="custom-card--info" *ngIf="showOptions">
+          <ul
+            class="custom-card--labels d-flex"
+            *ngIf="song?.premium || song?.favorite"
+          >
+            <li *ngIf="song?.premium">
+              <span class="badge badge-pill badge-warning"
+                ><i class="la la-star"></i
+              ></span>
+            </li>
+            <li *ngIf="song?.favorite">
+              <span class="badge badge-pill badge-danger"
+                ><i class="la la-heart"></i
+              ></span>
+            </li>
+          </ul>
+          <!-- Custom Card Options Dropdown -->
+          <div class="dropdown dropdown-icon">
+            <a
+              href="javascript:;"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="ion-md-more"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li class="dropdown-item">
+                <a
+                  href="javascript:;"
+                  class="dropdown-link"
+                  (click)="addFavorite()"
+                >
+                  <i class="la la-heart-o"></i>
+                </a>
+              </li>
+              <li class="dropdown-item">
+                <a
+                  href="javascript:;"
+                  class="dropdown-link"
+                  (click)="addInQueue()"
+                >
+                  <i class="la la-plus"></i>
+                </a>
+              </li>
+              <li class="dropdown-item">
+                <a [href]="song?.url" class="dropdown-link" download>
+                  <i class="la la-download"></i>
+                </a>
+              </li>
+              <li class="dropdown-item">
+                <a
+                  href="javascript:;"
+                  class="dropdown-link"
+                  (click)="shareSong()"
+                >
+                  <i class="la la-share-alt"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- End | Custom Card Info -->
+        <a (click)="addInPlayer()">
+          <img [src]="song?.cover_url" alt="{{ song?.name }}" />
+        </a>
+      </div>
+
+      <!-- Custom Card Options Dropdown -->
+      <a
+        class="custom-card--link mt-2"
+        [routerLink]="'/song/' + song.id + '/details'"
+      >
+        <h6 class="text-truncate" title="{{ song?.name }}">{{ song?.name }}</h6>
+        <p
+          class="text-truncate"
+          title="{{ song?.artist }}"
+          *ngIf="song?.artist"
+        >
+          {{ song?.artist }}
+        </p>
+      </a>
+    </div>
+    <!-- Begin | Custom Card [[ Find at scss/framework/components/custom-card/custom-card.scss ]] -->
+  `,
 })
 export class PrimaryCardComponent implements OnInit {
+  @Input() song: any = {};
+  @Input() showOptions = false;
+  @Input() imageBorderRadiusClass = "card-img--radius-lg";
 
-    @Input() song: any = {};
-    @Input() showOptions = false;
-    @Input() imageBorderRadiusClass = 'card-img--radius-lg';
+  classes = "";
 
-    classes = '';
+  constructor(private audioPlayerService: AudioPlayerService) {}
 
-    constructor(private audioPlayerService: AudioPlayerService) {
-    }
+  ngOnInit() {
+    this.classes = "custom-card--img " + this.imageBorderRadiusClass;
+  }
 
-    ngOnInit() {
-        this.classes = 'custom-card--img ' + this.imageBorderRadiusClass;
-    }
+  addFavorite() {
+    this.song.favorite = true;
+  }
 
-    addFavorite() {
-        this.song.favorite = true;
-    }
+  addInQueue() {}
 
-    addInQueue() {
-    }
+  shareSong() {}
 
-    shareSong() {
-    }
-
-    addInPlayer() {
-        this.audioPlayerService.playSong(this.song);
-    }
-
+  addInPlayer() {
+    this.audioPlayerService.playSong(this.song);
+  }
 }
