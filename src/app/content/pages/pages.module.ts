@@ -13,6 +13,7 @@ import { LayoutModule } from '../layout/layout.module';
 import { PartialsModule } from '../partials/partials.module';
 import { ComponentsModule } from './components/components.module';
 import { CoreModule } from '../../core/core.module';
+import { HttpClientModule } from '@angular/common/http';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -25,6 +26,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ],
     imports: [
         CommonModule,
+        HttpClientModule,
         PagesRoutingModule,
         PerfectScrollbarModule,
         SlickCarouselModule,

@@ -8,6 +8,7 @@ import { LoaderComponent } from './content/layout/loader/loader.component';
 import { LoadingService } from './core/services/loading.service';
 import { MenuConfigService } from './core/services/menu-config.service';
 import { SongsConfigService } from './core/services/songs-config.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -16,6 +17,7 @@ import { SongsConfigService } from './core/services/songs-config.service';
     ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         AppRoutingModule,
         LayoutModule
     ],

@@ -250,6 +250,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.initPlaylist();
     this.initRadio();
     this.initGenres();
+
+    this.initTopDeezerCharts();
   }
 
   ngAfterViewInit() {
@@ -264,6 +266,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       page: "/songs",
       items: this.songsConfigService.songsList,
     };
+  }
+
+  // Initiailize with top charts object from deezer api
+  async initTopDeezerCharts() {
+    try {
+      const topCharts = {
+        title: "Top Charts",
+        subTitle: "Listen top chart",
+        page: "/songs",
+        items: await this.songsConfigService.getCharts().toPromise(),
+      };
+
+      // Test that api returns value
+      console.log(topCharts.items);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // Initialize new release music object for section
