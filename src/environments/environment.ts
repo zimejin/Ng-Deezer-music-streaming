@@ -2,9 +2,12 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const CORS: string = "https://cors-anywhere.herokuapp.com/";
+
 export const environment = {
   production: false,
-  baseURL: "https://api.deezer.com/",
+
+  baseURL: CORS + "https://api.deezer.com/",
 };
 
 /*
