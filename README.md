@@ -1,17 +1,14 @@
 About
 -----------
-Twitch is a popular live streaming service that allows users to broadcast live video-game play and events. In this project
-using the Twitch API I built a Twitch Client that includes some of the core Twitch features.
-
-Note: For the best user experience when running the app be sure you have a good internet conection,This ensures the css is applied from the CDN.If you notice any styling issues, try running the app locally. "git clone" the repo, "npm install" dependencies and "npm start" to build the project.
+Deezer is an online music streaming service. It allows users to listen to music content from record labels, on various devices online or offline.
 
 ------------------------------------------
 #Twitch UI
 
-![Image](https://github.com/zimejin/Angular-4.0_Twitch-Client/blob/master/unnamed.gif?raw=true)
+![Image](https://github.com/zimejin/Ng-Deezer-music-streaming/blob/master/docs/screens/Screenshot%202020-07-19%2016.28.47.png?raw=true)
 
 
 Screen Shots of Project
 
-![Image](https://github.com/zimejin/Angular-4.0_Twitch-Client/blob/master/twitclihmsrn.png?raw=true)
+![Image](https://github.com/zimejin/Ng-Deezer-music-streaming/blob/master/docs/screens/Screenshot%202020-07-19%2016.29.09.png?raw=true)
 -------------------------
