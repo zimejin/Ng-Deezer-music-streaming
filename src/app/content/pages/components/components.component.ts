@@ -10,10 +10,7 @@ import { SkinService } from "../../../core/services/skin.service";
 @Component({
   selector: "app-components",
   template: `
-    <div id="wrapper">
-      <!-- Aside left -->
-      <app-aside-left></app-aside-left>
-
+    <div id="wrapper">      
       <!-- App header -->
       <app-header></app-header>
 
