@@ -20,7 +20,7 @@ export class Config {
             // Brand config
             brand: {
                 logo: './assets/images/logos/logo.svg',
-                name: 'Listen App'
+                name: 'Ng-Deezer'
             },
 
             // Theme skin config

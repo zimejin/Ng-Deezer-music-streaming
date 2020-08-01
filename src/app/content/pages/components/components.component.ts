@@ -10,9 +10,12 @@ import { SkinService } from "../../../core/services/skin.service";
 @Component({
   selector: "app-components",
   template: `
-    <div id="wrapper">      
+    <div id="wrapper">
       <!-- App header -->
       <app-header></app-header>
+
+      <!-- Aside left -->
+      <app-aside-left></app-aside-left>
 
       <perfect-scrollbar
         class="main-ps vh-100"
