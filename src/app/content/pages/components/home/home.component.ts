@@ -8,6 +8,8 @@ import { RadioConfigService } from "../../../../core/services/radio-config.servi
 import { GenresConfigService } from "../../../../core/services/genres-config.service";
 import { EventsConfigService } from "../../../../core/services/events-config.service";
 
+declare var DZ;
+
 @Component({
   selector: "app-home",
   template: `
@@ -235,9 +237,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private radioConfigService: RadioConfigService,
     private genresConfigService: GenresConfigService,
     private eventsConfigService: EventsConfigService
-  ) {}
+  ) {
+    DZ.init({
+      appId: "428982",
+      channelUrl: "",
+    });
+  }
 
   ngOnInit() {
+    DZ.ready(function (sdk_options) {
+      console.log("DZ SDK is ready", sdk_options);
+    });
+
     this.songsList = this.songsConfigService.songsList;
     // Just takes first 6 index of array for ui
     this.songsList = this.songsList.slice(0, 6);
@@ -256,6 +267,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.loadingService.stopLoading();
+
+    // Get data from user with ID 5
+    DZ.api("/user/5", function (response) {
+      console.log("Name of user id 5", response.name);
+    });
   }
 
   // Initialize top charts object for section
@@ -275,11 +291,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         title: "Top Charts",
         subTitle: "Listen top chart",
         page: "/songs",
-        items: await this.songsConfigService.getCharts().toPromise(),
+        //    items: await this.songsConfigService.getCharts().toPromise(),
       };
 
       // Test that api returns value
-      console.log(topCharts.items);
+      //    console.log(topCharts.items);
     } catch (error) {
       console.log(error);
     }

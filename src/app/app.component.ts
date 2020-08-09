@@ -11,7 +11,7 @@ import { LoadingService } from "./core/services/loading.service";
   `,
 })
 export class AppComponent implements OnInit {
-  title = "listen";
+  title = "ng-deezer";
 
   constructor(private loadingService: LoadingService) {
     this.loadingService.startLoading();

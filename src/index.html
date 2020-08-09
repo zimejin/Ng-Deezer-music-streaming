@@ -1,47 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <!-- Meta Tag -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Seo Meta -->
-    <meta name="description" content="Ng-Deezer - Angular 8 Music Streaming App">
-    <meta name="keywords" content="music template, music app, music web app, responsive music app, music, themeforest, html music app template, css3, html5">
+    <meta
+      name="description"
+      content="Ng-Deezer - Angular 8 Music Streaming App"
+    />
+    <meta
+      name="keywords"
+      content="music template, music app, music web app, responsive music app, music, themeforest, html music app template, css3, html5"
+    />
 
     <title>Ng-Deezer - Angular 8 Music Streaming App</title>
 
-    <base href="/">
+    <base href="/" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
     <!-- IOS Touch Icons -->
-    <link rel="apple-touch-icon" href="assets/images/logos/touch-icon-iphone.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/logos/touch-icon-ipad.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/logos/touch-icon-iphone-retina.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="assets/images/logos/touch-icon-ipad-retina.png">
+    <link
+      rel="apple-touch-icon"
+      href="assets/images/logos/touch-icon-iphone.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="assets/images/logos/touch-icon-ipad.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/logos/touch-icon-iphone-retina.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="167x167"
+      href="assets/images/logos/touch-icon-ipad-retina.png"
+    />
 
     <!-- Begin | Web font -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
     <script>
-        WebFont.load({
-            google: {"families": ["Open Sans:300,400,600,700,800", "Roboto Slab:100,300,400,700"]},
-            active: function () { sessionStorage.fonts = true; }
-        });
+      WebFont.load({
+        google: {
+          families: [
+            "Open Sans:300,400,600,700,800",
+            "Roboto Slab:100,300,400,700",
+          ],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
     </script>
     <!-- End | Web font -->
 
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-
+    <!-- Deezer SDK -->
+    <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
+  </head>
+  <body>
+    <!--  the dz-root ID attrbute that will allow users to log onto Deezer  -->
+    <div id="dz-root"></div>
+    
     <!-- App root to display components -->
     <app-root></app-root>
-
-</body>
+  </body>
 </html>
