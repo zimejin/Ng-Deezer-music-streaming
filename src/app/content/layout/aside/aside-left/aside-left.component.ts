@@ -39,7 +39,7 @@ import { DOCUMENT } from "@angular/common";
         <button
           type="button"
           routerLink="/add-music"
-          class="btn btn-block btn-danger btn-air btn-bold"
+          class="btn btn-block btn-success btn-air btn-bold"
           (click)="hideSidebar()"
         >
           <i [class]="asideFooterButton.icon"></i>

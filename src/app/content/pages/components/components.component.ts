@@ -58,6 +58,7 @@ export class ComponentsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const themeSkin = this.localStorageService.getThemeSkin();
+
     if (themeSkin) {
       this.document.body.classList.remove(this.themeClass);
       this.themeClass = "theme-" + themeSkin.theme;

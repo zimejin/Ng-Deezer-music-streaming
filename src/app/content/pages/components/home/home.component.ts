@@ -21,7 +21,7 @@ declare var DZ;
       <!-- Top Charts -->
       <app-section
         *ngIf="topCharts"
-        [section]="topCharts"
+        [section]="topDeezerCharts"
         [carouselButtonPositionClass]="carouselArrowPosClass3"
         [primaryCard]="true"
         [showImageOptions]="true"
@@ -228,6 +228,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   mainEvent: any = {};
   secondaryEvents: any = [];
+  topDeezerCharts: any;
 
   constructor(
     private loadingService: LoadingService,
@@ -287,15 +288,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   // Initiailize with top charts object from deezer api
   async initTopDeezerCharts() {
     try {
-      const topCharts = {
+      this.topDeezerCharts = {
         title: "Top Charts",
         subTitle: "Listen top chart",
         page: "/songs",
-        //    items: await this.songsConfigService.getCharts().toPromise(),
+        items: await this.songsConfigService.getCharts().toPromise(),
       };
 
       // Test that api returns value
-      //    console.log(topCharts.items);
+      console.log(this.topDeezerCharts);
     } catch (error) {
       console.log(error);
     }

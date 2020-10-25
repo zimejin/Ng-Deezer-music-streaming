@@ -12,7 +12,7 @@ import { Component, Input, OnInit } from "@angular/core";
             <p>{{ section?.subTitle }}</p>
           </div>
           <a
-            class="btn btn-sm btn-pill btn-air btn-primary"
+            class="btn btn-sm btn-pill btn-air btn-success"
             routerLink="{{ section?.page }}"
             >View All</a
           >
@@ -115,5 +115,9 @@ export class SectionComponent implements OnInit {
     };
 
     this.classes = this.classes + " " + this.carouselButtonPositionClass;
+setTimeout(() => {
+    // console.log(this.section)
+}, 5000);
+ 
   }
 }
