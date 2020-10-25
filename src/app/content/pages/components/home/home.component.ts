@@ -243,6 +243,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       bio: string;
     }[];
   };
+  podcast: { title: string; subTitle: string; page: string; items: any };
+  deezerPlaylist: { title: string; subTitle: string; page: string; items: any };
 
   constructor(
     private loadingService: LoadingService,
@@ -277,8 +279,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.initRadio();
     this.initGenres();
 
+    // TODO: Create a parent observable to store the value of the initial API call.
+
+    // TODO: Create Objects to Initialize the various components
     this.initTopDeezerCharts();
     this.initDeezerArtists();
+    this.initDeezerPlaylist();
+    this.initDeezerPodcast();
   }
 
   ngAfterViewInit() {
@@ -298,32 +305,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       page: "/songs",
       items: this.songsConfigService.songsList,
     };
-  }
-
-  // Initialize music artists object for section
-  async initDeezerArtists() {
-    this.deezerTopartists = {
-      title: "Featured Artists",
-      subTitle: "Select you best to listen",
-      page: "/artists",
-      items: await this.artistsConfigService.artistsListDeezer.toPromise(),
-    };
-
-    console.log("initDeezerArtists:: ", this.artists);
-  }
-
-  // Initiailize with top charts object from deezer api
-  async initTopDeezerCharts() {
-    try {
-      this.topDeezerCharts = {
-        title: "Top Charts",
-        subTitle: "Listen top chart",
-        page: "/songs",
-        items: await this.songsConfigService.getCharts().toPromise(),
-      };
-    } catch (error) {
-      console.log(`initTopDeezerCharts:- ${error}`);
-    }
   }
 
   // Initialize new release music object for section
@@ -396,5 +377,57 @@ export class HomeComponent implements OnInit, AfterViewInit {
       page: "/genres",
       items: this.genresConfigService.genresList,
     };
+  }
+
+  // Initialize music artists object for section
+  async initDeezerArtists() {
+    this.deezerTopartists = {
+      title: "Featured Artists",
+      subTitle: "Select you best to listen",
+      page: "/artists",
+      items: await this.artistsConfigService.artistsListDeezer.toPromise(),
+    };
+
+    console.log("initDeezerArtists:: ", this.artists);
+  }
+
+  // Initiailize with top charts object from deezer api
+  async initTopDeezerCharts() {
+    try {
+      this.topDeezerCharts = {
+        title: "Top Charts",
+        subTitle: "Listen top chart",
+        page: "/songs",
+        items: await this.songsConfigService.getCharts().toPromise(),
+      };
+    } catch (error) {
+      console.log(`initTopDeezerCharts:- ${error}`);
+    }
+  }
+
+  // Initialize pod cast object for section
+  initDeezerPodcast() {
+    this.podcast = {
+      title: "Radio",
+      subTitle: "Listen live now",
+      page: "/stations",
+      items: this.radioConfigService.radioList,
+    };
+  }
+
+  // Initialize music playlist object for section
+  initDeezerPlaylist() {
+    this.deezerPlaylist = {
+      title: "Your Playlist",
+      subTitle: "You best to listen",
+      page: "/playlist",
+      items: this.playlistConfigService.playlist,
+    };
+
+    // Add songs in playlist
+    const playlistItems = this.deezerPlaylist.items;
+    for (const playlistItem of playlistItems) {
+      playlistItem.songs = this.songsConfigService.songsList;
+    }
   }
 }
