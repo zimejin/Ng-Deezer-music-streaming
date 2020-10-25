@@ -163,8 +163,8 @@ declare var DZ;
 
       <!-- Artists -->
       <app-section
-        *ngIf="artists"
-        [section]="artists"
+        *ngIf="deezerTopartists"
+        [section]="deezerTopartists"
         [carouselButtonPositionClass]="carouselArrowPosClass2"
         [imageCard]="true"
         [artistRouteLink]="true"
@@ -228,7 +228,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   mainEvent: any = {};
   secondaryEvents: any = [];
+
   topDeezerCharts: any;
+  deezerTopartists: {
+    title: string;
+    subTitle: string;
+    page: string;
+    items: {
+      id: any;
+      name: any;
+      dob: string;
+      cover_url: any;
+      ratings: string | number;
+      bio: string;
+    }[];
+  };
 
   constructor(
     private loadingService: LoadingService,
@@ -264,6 +278,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.initGenres();
 
     this.initTopDeezerCharts();
+    this.initDeezerArtists();
   }
 
   ngAfterViewInit() {
@@ -285,6 +300,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     };
   }
 
+  // Initialize music artists object for section
+  async initDeezerArtists() {
+    this.deezerTopartists = {
+      title: "Featured Artists",
+      subTitle: "Select you best to listen",
+      page: "/artists",
+      items: await this.artistsConfigService.artistsListDeezer.toPromise(),
+    };
+
+    console.log("initDeezerArtists:: ", this.artists);
+  }
+
   // Initiailize with top charts object from deezer api
   async initTopDeezerCharts() {
     try {
@@ -294,11 +321,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         page: "/songs",
         items: await this.songsConfigService.getCharts().toPromise(),
       };
-
-      // Test that api returns value
-      console.log(this.topDeezerCharts);
     } catch (error) {
-      console.log(error);
+      console.log(`initTopDeezerCharts:- ${error}`);
     }
   }
 

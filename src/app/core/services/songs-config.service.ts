@@ -34,7 +34,6 @@ export class SongsConfigService {
     try {
       const path = environment.baseURL + "chart";
       return this.http.get(path, httpOptions).pipe(
-        tap((response) => console.log("API:: ", response)),
         map((response: any) => response.tracks),
         map((tracks: any) => tracks.data),
         switchMap((data: any[]) => {
@@ -58,7 +57,7 @@ export class SongsConfigService {
         })
       );
     } catch (error) {
-      console.log("Error => ", error);
+      console.log("getCharts Error::", error);
     }
   }
 }
