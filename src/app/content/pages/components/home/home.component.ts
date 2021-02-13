@@ -7,6 +7,7 @@ import { PlaylistConfigService } from "../../../../core/services/playlist-config
 import { RadioConfigService } from "../../../../core/services/radio-config.service";
 import { GenresConfigService } from "../../../../core/services/genres-config.service";
 import { EventsConfigService } from "../../../../core/services/events-config.service";
+import { DeezerService } from "src/app/core/services/deezer-service";
 
 declare var DZ;
 
@@ -27,129 +28,6 @@ declare var DZ;
         [showImageOptions]="true"
       >
       </app-section>
-
-      <div class="row">
-        <!-- Begin | Events -->
-        <div class="section col-12 col-xl-7">
-          <div class="row h-100">
-            <div class="col-sm-5 pb-4">
-              <app-event-countdown-card
-                *ngIf="mainEvent"
-                [musicEvent]="mainEvent"
-              ></app-event-countdown-card>
-            </div>
-            <div class="col-sm-7" *ngIf="secondaryEvents.length > 0">
-              <div class="h-50 pb-4" *ngFor="let event of secondaryEvents">
-                <app-event-card [musicEvent]="event"></app-event-card>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End | Events -->
-
-        <!-- Begin | Songs tabs -->
-        <div class="section col-12 col-xl-5">
-          <!-- Begin | Line Tabs [[ Find at scss/framework/components/line-tabs.scss ]] -->
-          <ul
-            appLineTabs
-            class="nav nav-tabs line-tabs line-tabs-primary text-uppercase mb-4"
-            id="songsList"
-            role="tablist"
-          >
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                id="recent-tab"
-                data-toggle="tab"
-                href="#recent"
-                role="tab"
-                aria-controls="recent"
-                aria-selected="true"
-                >Recent</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                id="trending-tab"
-                data-toggle="tab"
-                href="#trending"
-                role="tab"
-                aria-controls="trending"
-                aria-selected="false"
-                >Trending</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                id="international-tab"
-                data-toggle="tab"
-                href="#international"
-                role="tab"
-                aria-controls="international"
-                aria-selected="false"
-                >International</a
-              >
-            </li>
-          </ul>
-          <!-- End | Line Tabs -->
-
-          <!-- Begin | Tab Content -->
-          <div class="tab-content" id="songsListContent">
-            <div
-              class="tab-pane fade show active"
-              id="recent"
-              role="tabpanel"
-              aria-labelledby="recent-tab"
-            >
-              <!-- Begin | Custom List [[ Find at scss/framework/components/songs-list/songs-list.scss ]] -->
-              <perfect-scrollbar style="height: 370px" class="song-list">
-                <app-song-list-view
-                  *ngFor="let song of songsList; let i = index"
-                  [songNumber]="i + 1"
-                  [song]="song"
-                ></app-song-list-view>
-              </perfect-scrollbar>
-              <!-- End | Custom List -->
-            </div>
-            <div
-              class="tab-pane fade"
-              id="trending"
-              role="tabpanel"
-              aria-labelledby="trending-tab"
-            >
-              <!-- Begin | Custom List [[ Find at scss/framework/components/songs-list/songs-list.scss ]] -->
-              <perfect-scrollbar style="height: 370px" class="song-list">
-                <app-song-list-view
-                  *ngFor="let song of songsList; let i = index"
-                  [songNumber]="i + 1"
-                  [song]="song"
-                ></app-song-list-view>
-              </perfect-scrollbar>
-              <!-- End | Custom List -->
-            </div>
-            <div
-              class="tab-pane fade"
-              id="international"
-              role="tabpanel"
-              aria-labelledby="international-tab"
-            >
-              <!-- Begin | Custom List [[ Find at scss/framework/components/songs-list/songs-list.scss ]] -->
-              <perfect-scrollbar style="height: 370px" class="song-list">
-                <app-song-list-view
-                  *ngFor="let song of songsList; let i = index"
-                  [songNumber]="i + 1"
-                  [song]="song"
-                ></app-song-list-view>
-              </perfect-scrollbar>
-              <!-- End | Custom List -->
-            </div>
-          </div>
-          <!-- End | Tab Content -->
-        </div>
-        <!-- End | Songs tabs -->
-      </div>
 
       <!-- New Release -->
       <app-section
@@ -253,7 +131,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private playlistConfigService: PlaylistConfigService,
     private radioConfigService: RadioConfigService,
     private genresConfigService: GenresConfigService,
-    private eventsConfigService: EventsConfigService
+    private eventsConfigService: EventsConfigService,
+    private deezerAPIService: DeezerService
   ) {
     DZ.init({
       appId: "428982",
@@ -261,59 +140,79 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {
-    DZ.ready(function (sdk_options) {
+  async ngOnInit() {
+    DZ.ready((sdk_options: any) => {
       console.log("DZ SDK is ready", sdk_options);
+
+      // Load the charts data from the microservice
+      this.deezerAPIService.initialize();
     });
 
-    this.songsList = this.songsConfigService.songsList;
-    // Just takes first 6 index of array for ui
-    this.songsList = this.songsList.slice(0, 6);
+    // this.songsList = await this.songsConfigService.songsList.toPromise();
+    // // Just takes first 6 index of array for ui
+    // this.songsList = this.songsList.slice(0, 6);
 
-    this.initTopCharts();
-    this.initNewRelease();
-    this.initEvents();
-    this.initArtists();
-    this.initRetro();
-    this.initPlaylist();
-    this.initRadio();
-    this.initGenres();
+    // this.initTopCharts();
+    // this.initNewRelease();
+    // this.initEvents();
+    // this.initArtists();
+    // this.initRetro();
+    // this.initPlaylist();
+    // this.initRadio();
+    // this.initGenres();
 
-    // TODO: Create a parent observable to store the value of the initial API call.
+    // // TODO: Create a parent observable to store the value of the initial API call.
 
-    // TODO: Create Objects to Initialize the various components
-    this.initTopDeezerCharts();
-    this.initDeezerArtists();
-    this.initDeezerPlaylist();
-    this.initDeezerPodcast();
+    // // TODO: Create Objects to Initialize the various components
+    // this.initTopDeezerCharts();
+    // this.initDeezerArtists();
+    // this.initDeezerPlaylist();
+    // this.initDeezerPodcast();
   }
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     this.loadingService.stopLoading();
 
     // Get data from user with ID 5
     DZ.api("/user/5", function (response) {
       console.log("Name of user id 5", response.name);
     });
+
+    // console.log(
+    //   "ALBUMS -> ",
+    //   await this.songsConfigService.fetch_TopTenAlbums().toPromise()
+    // );
+    // console.log(
+    //   "ARTISTS -> ",
+    //   await this.songsConfigService.fetch_TopTenArtist().toPromise()
+    // );
+    // console.log(
+    //   "PLAYLIST  -> ",
+    //   await this.songsConfigService.fetch_TopTenPlaylist().toPromise()
+    // );
+    // console.log(
+    //   "PODCAST -> ",
+    //   await this.songsConfigService.fetch_TopTenPodcast().toPromise()
+    // );
   }
 
   // Initialize top charts object for section
-  initTopCharts() {
+  async initTopCharts() {
     this.topCharts = {
       title: "Top Charts",
       subTitle: "Listen top chart",
       page: "/songs",
-      items: this.songsConfigService.songsList,
+      items: await this.songsConfigService.songsList.toPromise(),
     };
   }
 
   // Initialize new release music object for section
-  initNewRelease() {
+  async initNewRelease() {
     this.newRelease = {
       title: "New Releases",
       subTitle: "Listen recently release music",
       page: "/songs",
-      items: this.songsConfigService.songsList,
+      items: await this.songsConfigService.songsList.toPromise(),
     };
   }
 
@@ -334,17 +233,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Initialize retro music object for section
-  initRetro() {
+  async initRetro() {
     this.retro = {
       title: "Retro Classic",
       subTitle: "Old is gold",
       page: "/songs",
-      items: this.songsConfigService.songsList,
+      items: await this.songsConfigService.songsList.toPromise(),
     };
   }
 
   // Initialize music playlist object for section
-  initPlaylist() {
+  async initPlaylist() {
     this.playlist = {
       title: "Your Playlist",
       subTitle: "You best to listen",
@@ -355,7 +254,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // Add songs in playlist
     const playlistItems = this.playlist.items;
     for (const playlistItem of playlistItems) {
-      playlistItem.songs = this.songsConfigService.songsList;
+      playlistItem.songs = await this.songsConfigService.songsList.toPromise();
     }
   }
 
@@ -387,8 +286,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       page: "/artists",
       items: await this.artistsConfigService.artistsListDeezer.toPromise(),
     };
-
-    console.log("initDeezerArtists:: ", this.artists);
   }
 
   // Initiailize with top charts object from deezer api
@@ -396,9 +293,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     try {
       this.topDeezerCharts = {
         title: "Top Charts",
-        subTitle: "Listen top chart",
+        subTitle: "Listen to top ten artists",
         page: "/songs",
-        items: await this.songsConfigService.getCharts().toPromise(),
+        items: await this.songsConfigService.songsList.toPromise(),
       };
     } catch (error) {
       console.log(`initTopDeezerCharts:- ${error}`);
@@ -406,7 +303,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Initialize pod cast object for section
-  initDeezerPodcast() {
+  async initDeezerPodcast() {
     this.podcast = {
       title: "Radio",
       subTitle: "Listen live now",
@@ -416,7 +313,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Initialize music playlist object for section
-  initDeezerPlaylist() {
+  async initDeezerPlaylist() {
     this.deezerPlaylist = {
       title: "Your Playlist",
       subTitle: "You best to listen",
@@ -427,7 +324,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // Add songs in playlist
     const playlistItems = this.deezerPlaylist.items;
     for (const playlistItem of playlistItems) {
-      playlistItem.songs = this.songsConfigService.songsList;
+      playlistItem.songs = await this.songsConfigService.songsList.toPromise();
     }
   }
 }
