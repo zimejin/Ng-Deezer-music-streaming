@@ -9,8 +9,6 @@ import { GenresConfigService } from "../../../../core/services/genres-config.ser
 import { EventsConfigService } from "../../../../core/services/events-config.service";
 import { DeezerService } from "src/app/core/services/deezer-service";
 
-declare var DZ;
-
 @Component({
   selector: "app-home",
   template: `
@@ -133,86 +131,44 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private genresConfigService: GenresConfigService,
     private eventsConfigService: EventsConfigService,
     private deezerAPIService: DeezerService
-  ) {
-    DZ.init({
-      appId: "428982",
-      channelUrl: "",
-    });
-  }
+  ) {}
 
   async ngOnInit() {
-    DZ.ready((sdk_options: any) => {
-      console.log("DZ SDK is ready", sdk_options);
+    this.songsList = await this.songsConfigService.songsList;
+    // Just takes first 6 index of array for ui
+    this.songsList = this.songsList.slice(0, 6);
 
-      // Load the charts data from the microservice
-      this.deezerAPIService.initialize();
-    });
-
-    // this.songsList = await this.songsConfigService.songsList.toPromise();
-    // // Just takes first 6 index of array for ui
-    // this.songsList = this.songsList.slice(0, 6);
-
-    // this.initTopCharts();
-    // this.initNewRelease();
-    // this.initEvents();
-    // this.initArtists();
-    // this.initRetro();
-    // this.initPlaylist();
-    // this.initRadio();
-    // this.initGenres();
-
-    // // TODO: Create a parent observable to store the value of the initial API call.
-
-    // // TODO: Create Objects to Initialize the various components
-    // this.initTopDeezerCharts();
-    // this.initDeezerArtists();
-    // this.initDeezerPlaylist();
-    // this.initDeezerPodcast();
+    this.initTopCharts();
+    this.initNewRelease();
+    this.initEvents();
+    this.initArtists();
+    this.initRetro();
+    this.initPlaylist();
+    this.initRadio();
+    this.initGenres();
   }
 
   async ngAfterViewInit() {
     this.loadingService.stopLoading();
-
-    // Get data from user with ID 5
-    DZ.api("/user/5", function (response) {
-      console.log("Name of user id 5", response.name);
-    });
-
-    // console.log(
-    //   "ALBUMS -> ",
-    //   await this.songsConfigService.fetch_TopTenAlbums().toPromise()
-    // );
-    // console.log(
-    //   "ARTISTS -> ",
-    //   await this.songsConfigService.fetch_TopTenArtist().toPromise()
-    // );
-    // console.log(
-    //   "PLAYLIST  -> ",
-    //   await this.songsConfigService.fetch_TopTenPlaylist().toPromise()
-    // );
-    // console.log(
-    //   "PODCAST -> ",
-    //   await this.songsConfigService.fetch_TopTenPodcast().toPromise()
-    // );
   }
 
   // Initialize top charts object for section
-  async initTopCharts() {
+  initTopCharts() {
     this.topCharts = {
       title: "Top Charts",
       subTitle: "Listen top chart",
       page: "/songs",
-      items: await this.songsConfigService.songsList.toPromise(),
+      items: this.songsConfigService.songsList,
     };
   }
 
   // Initialize new release music object for section
-  async initNewRelease() {
+  initNewRelease() {
     this.newRelease = {
       title: "New Releases",
       subTitle: "Listen recently release music",
       page: "/songs",
-      items: await this.songsConfigService.songsList.toPromise(),
+      items: this.songsConfigService.songsList,
     };
   }
 
@@ -233,17 +189,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Initialize retro music object for section
-  async initRetro() {
+  initRetro() {
     this.retro = {
       title: "Retro Classic",
       subTitle: "Old is gold",
       page: "/songs",
-      items: await this.songsConfigService.songsList.toPromise(),
+      items: this.songsConfigService.songsList,
     };
   }
 
   // Initialize music playlist object for section
-  async initPlaylist() {
+  initPlaylist() {
     this.playlist = {
       title: "Your Playlist",
       subTitle: "You best to listen",
@@ -254,7 +210,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // Add songs in playlist
     const playlistItems = this.playlist.items;
     for (const playlistItem of playlistItems) {
-      playlistItem.songs = await this.songsConfigService.songsList.toPromise();
+      playlistItem.songs = this.songsConfigService.songsList;
     }
   }
 
@@ -295,7 +251,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         title: "Top Charts",
         subTitle: "Listen to top ten artists",
         page: "/songs",
-        items: await this.songsConfigService.songsList.toPromise(),
+        items: await this.songsConfigService.songsList,
       };
     } catch (error) {
       console.log(`initTopDeezerCharts:- ${error}`);
@@ -324,7 +280,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // Add songs in playlist
     const playlistItems = this.deezerPlaylist.items;
     for (const playlistItem of playlistItems) {
-      playlistItem.songs = await this.songsConfigService.songsList.toPromise();
+      playlistItem.songs = await this.songsConfigService.songsList;
     }
   }
 }

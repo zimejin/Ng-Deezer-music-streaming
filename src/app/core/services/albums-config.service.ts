@@ -17,23 +17,23 @@ export class AlbumsConfigService {
   public albumsConfig: AlbumsConfig = new AlbumsConfig();
   source$: Observable<Albums>;
 
-  constructor(private chartsService: DeezerService) {
-    this.source$ = this.chartsService.chartsObservable$.pipe(pluck("albums"));
-    this.source$.subscribe((data) => console.log("Chart Observable - ", data));
-  }
+  constructor(private chartsService: DeezerService) {}
 
-  // get albumsList() {
-  //   return this.albumsConfig.config.items;
-  // }
+  get albumsList() {
+    return this.albumsConfig.config.items;
+  }
 
   async getAlbumByIb(id: number) {
     let list = await this.albumsList.toPromise();
     list.find((album: { id: any }) => album.id === id);
   }
 
-  get albumsList(): Observable<any> {
+  get deezerAlbumsList(): Observable<any> {
     try {
-      return this.source$.pipe(
+      const source$ = this.chartsService.chartsObservable$.pipe(
+        pluck("albums")
+      );
+      return source$.pipe(
         tap((response) => console.log("Response from getCharts -> ", response)),
         map((albums) => albums.data),
         switchMap((data: any[]) => {

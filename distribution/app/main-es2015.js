@@ -517,20 +517,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _core_services_loading_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./core/services/loading.service */ "./src/app/core/services/loading.service.ts");
+/* harmony import */ var _core_services_deezer_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./core/services/deezer-service */ "./src/app/core/services/deezer-service.ts");
+/* harmony import */ var _core_services_loading_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./core/services/loading.service */ "./src/app/core/services/loading.service.ts");
+
 
 
 
 let AppComponent = class AppComponent {
-    constructor(loadingService) {
+    constructor(loadingService, deezerAPIService) {
         this.loadingService = loadingService;
+        this.deezerAPIService = deezerAPIService;
         this.title = "ng-deezer";
         this.loadingService.startLoading();
+        // Load the charts data from the microservice
+        this.deezerAPIService.initialize();
     }
     ngOnInit() { }
 };
 AppComponent.ctorParameters = () => [
-    { type: _core_services_loading_service__WEBPACK_IMPORTED_MODULE_2__["LoadingService"] }
+    { type: _core_services_loading_service__WEBPACK_IMPORTED_MODULE_3__["LoadingService"] },
+    { type: _core_services_deezer_service__WEBPACK_IMPORTED_MODULE_2__["DeezerService"] }
 ];
 AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1345,7 +1351,7 @@ let AsideRightComponent = class AsideRightComponent {
                 id: 1,
                 name: "Listen Special",
                 cover_url: "./assets/images/background/horizontal/1.jpg",
-                songs: yield this.songsConfigService.songsList.toPromise(),
+                songs: yield this.songsConfigService.songsList,
             };
         });
     }
@@ -1796,14 +1802,12 @@ let SearchComponent = class SearchComponent {
         this.artistsList = [];
     }
     ngOnInit() {
-        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
-            this.songsList = yield this.songsConfigService.songsList.toPromise();
-            this.songsList = this.songsList.slice(0, 3);
-            this.albumsList = this.albumsConfigService.albumsList;
-            this.albumsList = this.albumsList.slice(2, 5);
-            this.artistsList = this.artistsConfigService.artistsList;
-            this.artistsList = this.artistsList.slice(0, 6);
-        });
+        this.songsList = this.songsConfigService.songsList;
+        this.songsList = this.songsList.slice(0, 3);
+        this.albumsList = this.albumsConfigService.albumsList;
+        this.albumsList = this.albumsList.slice(2, 5);
+        this.artistsList = this.artistsConfigService.artistsList;
+        this.artistsList = this.artistsList.slice(0, 6);
     }
     goToPage(page) {
         page = "/" + page;
@@ -3517,21 +3521,20 @@ let AlbumsConfigService = class AlbumsConfigService {
     constructor(chartsService) {
         this.chartsService = chartsService;
         this.albumsConfig = new _config_albums__WEBPACK_IMPORTED_MODULE_4__["AlbumsConfig"]();
-        this.source$ = this.chartsService.chartsObservable$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["pluck"])("albums"));
-        this.source$.subscribe((data) => console.log("Chart Observable - ", data));
     }
-    // get albumsList() {
-    //   return this.albumsConfig.config.items;
-    // }
+    get albumsList() {
+        return this.albumsConfig.config.items;
+    }
     getAlbumByIb(id) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
             let list = yield this.albumsList.toPromise();
             list.find((album) => album.id === id);
         });
     }
-    get albumsList() {
+    get deezerAlbumsList() {
         try {
-            return this.source$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])((response) => console.log("Response from getCharts -> ", response)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((albums) => albums.data), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])((data) => {
+            const source$ = this.chartsService.chartsObservable$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["pluck"])("albums"));
+            return source$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])((response) => console.log("Response from getCharts -> ", response)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((albums) => albums.data), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])((data) => {
                 return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(data.map((data) => ({
                     id: data.id || "",
                     name: data.title || "",
@@ -3689,8 +3692,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-
 
 
 
@@ -3706,14 +3707,17 @@ let DeezerService = class DeezerService {
         this.chartSource$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](null);
         this.chartsObservable$ = this.chartSource$.asObservable();
     }
+    // Load the charts data from the microservice
     initialize() {
-        console.clear();
-        console.log("Initialized");
-        this.chartItems()
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])((response) => console.log("Deezer response -> ", response)))
-            .subscribe((items) => (items ? this.chartSource$.next(items) : null));
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+            const response = yield this.chartItems.toPromise();
+            if (response) {
+                this.chartSource$.next(response);
+                console.log("Deezer response -> ", response);
+            }
+        });
     }
-    chartItems() {
+    get chartItems() {
         const path = `${this.REST_API}/getCharts`;
         return this.http.get(path, httpOptions);
     }
@@ -4027,14 +4031,9 @@ let SongsConfigService = class SongsConfigService {
     constructor(chartsService) {
         this.chartsService = chartsService;
         this.songsConfig = new _config_songs__WEBPACK_IMPORTED_MODULE_2__["SongsConfig"]();
-        this.initialize();
-    }
-    initialize() {
-        this.source$ = this.chartsService.chartsObservable$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["pluck"])("tracks"));
-        this.source$.subscribe((data) => console.log("Chart Observable - ", data));
     }
     get songsList() {
-        return this.fetchTracks();
+        return this.songsConfig.config.items;
     }
     get defaultSong() {
         return this.songsConfig.config.items[0];
@@ -4047,7 +4046,7 @@ let SongsConfigService = class SongsConfigService {
     }
     fetchTracks() {
         try {
-            return this.source$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((tracks) => tracks.data), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["switchMap"])((data) => {
+            return this.chartsService.chartsObservable$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["pluck"])("tracks")).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((tracks) => tracks.data), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["switchMap"])((data) => {
                 return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["of"])(data.map((data) => ({
                     id: data.id || "",
                     name: data.title || "",

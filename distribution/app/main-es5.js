@@ -1015,17 +1015,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _core_services_loading_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var _core_services_deezer_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! ./core/services/deezer-service */
+    "./src/app/core/services/deezer-service.ts");
+    /* harmony import */
+
+
+    var _core_services_loading_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ./core/services/loading.service */
     "./src/app/core/services/loading.service.ts");
 
     var AppComponent = /*#__PURE__*/function () {
-      function AppComponent(loadingService) {
+      function AppComponent(loadingService, deezerAPIService) {
         _classCallCheck(this, AppComponent);
 
         this.loadingService = loadingService;
+        this.deezerAPIService = deezerAPIService;
         this.title = "ng-deezer";
-        this.loadingService.startLoading();
+        this.loadingService.startLoading(); // Load the charts data from the microservice
+
+        this.deezerAPIService.initialize();
       }
 
       _createClass(AppComponent, [{
@@ -1038,7 +1047,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     AppComponent.ctorParameters = function () {
       return [{
-        type: _core_services_loading_service__WEBPACK_IMPORTED_MODULE_2__["LoadingService"]
+        type: _core_services_loading_service__WEBPACK_IMPORTED_MODULE_3__["LoadingService"]
+      }, {
+        type: _core_services_deezer_service__WEBPACK_IMPORTED_MODULE_2__["DeezerService"]
       }];
     };
 
@@ -2016,7 +2027,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 switch (_context.prev = _context.next) {
                   case 0:
                     _context.next = 2;
-                    return this.songsConfigService.songsList.toPromise();
+                    return this.songsConfigService.songsList;
 
                   case 2:
                     _context.t0 = _context.sent;
@@ -2747,29 +2758,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(SearchComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-            return regeneratorRuntime.wrap(function _callee2$(_context2) {
-              while (1) {
-                switch (_context2.prev = _context2.next) {
-                  case 0:
-                    _context2.next = 2;
-                    return this.songsConfigService.songsList.toPromise();
-
-                  case 2:
-                    this.songsList = _context2.sent;
-                    this.songsList = this.songsList.slice(0, 3);
-                    this.albumsList = this.albumsConfigService.albumsList;
-                    this.albumsList = this.albumsList.slice(2, 5);
-                    this.artistsList = this.artistsConfigService.artistsList;
-                    this.artistsList = this.artistsList.slice(0, 6);
-
-                  case 8:
-                  case "end":
-                    return _context2.stop();
-                }
-              }
-            }, _callee2, this);
-          }));
+          this.songsList = this.songsConfigService.songsList;
+          this.songsList = this.songsList.slice(0, 3);
+          this.albumsList = this.albumsConfigService.albumsList;
+          this.albumsList = this.albumsList.slice(2, 5);
+          this.artistsList = this.artistsConfigService.artistsList;
+          this.artistsList = this.artistsList.slice(0, 6);
         }
       }, {
         key: "goToPage",
@@ -4642,46 +4636,45 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         this.chartsService = chartsService;
         this.albumsConfig = new _config_albums__WEBPACK_IMPORTED_MODULE_4__["AlbumsConfig"]();
-        this.source$ = this.chartsService.chartsObservable$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["pluck"])("albums"));
-        this.source$.subscribe(function (data) {
-          return console.log("Chart Observable - ", data);
-        });
-      } // get albumsList() {
-      //   return this.albumsConfig.config.items;
-      // }
-
+      }
 
       _createClass(AlbumsConfigService, [{
         key: "getAlbumByIb",
         value: function getAlbumByIb(id) {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
             var list;
-            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
               while (1) {
-                switch (_context3.prev = _context3.next) {
+                switch (_context2.prev = _context2.next) {
                   case 0:
-                    _context3.next = 2;
+                    _context2.next = 2;
                     return this.albumsList.toPromise();
 
                   case 2:
-                    list = _context3.sent;
+                    list = _context2.sent;
                     list.find(function (album) {
                       return album.id === id;
                     });
 
                   case 4:
                   case "end":
-                    return _context3.stop();
+                    return _context2.stop();
                 }
               }
-            }, _callee3, this);
+            }, _callee2, this);
           }));
         }
       }, {
         key: "albumsList",
         get: function get() {
+          return this.albumsConfig.config.items;
+        }
+      }, {
+        key: "deezerAlbumsList",
+        get: function get() {
           try {
-            return this.source$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (response) {
+            var source$ = this.chartsService.chartsObservable$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["pluck"])("albums"));
+            return source$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (response) {
               return console.log("Response from getCharts -> ", response);
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (albums) {
               return albums.data;
@@ -4972,12 +4965,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! rxjs */
     "./node_modules/rxjs/_esm2015/index.js");
-    /* harmony import */
-
-
-    var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-    /*! rxjs/operators */
-    "./node_modules/rxjs/_esm2015/operators/index.js");
 
     var httpOptions = {
       headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]().set("Content-Type", "application/json")
@@ -4992,24 +4979,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.REST_API = "http://localhost:3000/api";
         this.chartSource$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](null);
         this.chartsObservable$ = this.chartSource$.asObservable();
-      }
+      } // Load the charts data from the microservice
+
 
       _createClass(DeezerService, [{
         key: "initialize",
         value: function initialize() {
-          var _this8 = this;
+          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+            var response;
+            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+              while (1) {
+                switch (_context3.prev = _context3.next) {
+                  case 0:
+                    _context3.next = 2;
+                    return this.chartItems.toPromise();
 
-          console.clear();
-          console.log("Initialized");
-          this.chartItems().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (response) {
-            return console.log("Deezer response -> ", response);
-          })).subscribe(function (items) {
-            return items ? _this8.chartSource$.next(items) : null;
-          });
+                  case 2:
+                    response = _context3.sent;
+
+                    if (response) {
+                      this.chartSource$.next(response);
+                      console.log("Deezer response -> ", response);
+                    }
+
+                  case 4:
+                  case "end":
+                    return _context3.stop();
+                }
+              }
+            }, _callee3, this);
+          }));
         }
       }, {
         key: "chartItems",
-        value: function chartItems() {
+        get: function get() {
           var path = "".concat(this.REST_API, "/getCharts");
           return this.http.get(path, httpOptions);
         }
@@ -5548,18 +5551,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         this.chartsService = chartsService;
         this.songsConfig = new _config_songs__WEBPACK_IMPORTED_MODULE_2__["SongsConfig"]();
-        this.initialize();
       }
 
       _createClass(SongsConfigService, [{
-        key: "initialize",
-        value: function initialize() {
-          this.source$ = this.chartsService.chartsObservable$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["pluck"])("tracks"));
-          this.source$.subscribe(function (data) {
-            return console.log("Chart Observable - ", data);
-          });
-        }
-      }, {
         key: "getSongByIb",
         value: function getSongByIb(id) {
           return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
@@ -5589,7 +5583,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "fetchTracks",
         value: function fetchTracks() {
           try {
-            return this.source$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (tracks) {
+            return this.chartsService.chartsObservable$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["pluck"])("tracks")).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (tracks) {
               return tracks.data;
             }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["switchMap"])(function (data) {
               return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["of"])(data.map(function (data) {
@@ -5744,7 +5738,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "songsList",
         get: function get() {
-          return this.fetchTracks();
+          return this.songsConfig.config.items;
         }
       }, {
         key: "defaultSong",

@@ -97,8 +97,8 @@ export class SearchComponent implements OnInit {
     private searchService: SearchService
   ) {}
 
-  async ngOnInit() {
-    this.songsList = await this.songsConfigService.songsList.toPromise();
+  ngOnInit() {
+    this.songsList = this.songsConfigService.songsList;
     this.songsList = this.songsList.slice(0, 3);
 
     this.albumsList = this.albumsConfigService.albumsList;

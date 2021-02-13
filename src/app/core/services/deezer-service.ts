@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { tap } from "rxjs/operators";
@@ -21,15 +21,17 @@ export class DeezerService {
 
   constructor(private http: HttpClient) {}
 
-  initialize() {
-    console.clear();
-    console.log("Initialized");
-    this.chartItems()
-      .pipe(tap((response) => console.log("Deezer response -> ", response)))
-      .subscribe((items) => (items ? this.chartSource$.next(items) : null));
+  // Load the charts data from the microservice
+  async initialize() {
+    const response = await this.chartItems.toPromise();
+    if (response) {
+      this.chartSource$.next(response);
+
+      console.log("Deezer response -> ", response);
+    }
   }
 
-  private chartItems(): Observable<API_CHART_DATA_MODEL> {
+  private get chartItems(): Observable<API_CHART_DATA_MODEL> {
     const path = `${this.REST_API}/getCharts`;
     return this.http.get<API_CHART_DATA_MODEL>(path, httpOptions);
   }

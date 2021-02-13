@@ -59,7 +59,7 @@ export class AsideRightComponent implements OnInit, OnDestroy {
       id: 1,
       name: "Listen Special",
       cover_url: "./assets/images/background/horizontal/1.jpg",
-      songs: await this.songsConfigService.songsList.toPromise(),
+      songs: await this.songsConfigService.songsList,
     };
   }
 

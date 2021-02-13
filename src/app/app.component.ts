@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { DeezerService } from "./core/services/deezer-service";
 import { LoadingService } from "./core/services/loading.service";
 
 @Component({
@@ -13,8 +14,14 @@ import { LoadingService } from "./core/services/loading.service";
 export class AppComponent implements OnInit {
   title = "ng-deezer";
 
-  constructor(private loadingService: LoadingService) {
+  constructor(
+    private loadingService: LoadingService,
+    private deezerAPIService: DeezerService
+  ) {
     this.loadingService.startLoading();
+
+    // Load the charts data from the microservice
+    this.deezerAPIService.initialize();
   }
 
   ngOnInit() {}

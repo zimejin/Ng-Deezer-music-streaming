@@ -89981,51 +89981,42 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.radio = {};
         this.genres = {};
         this.mainEvent = {};
-        this.secondaryEvents = [];
-        DZ.init({
-          appId: "428982",
-          channelUrl: ""
-        });
+        this.secondaryEvents = []; // DZ.init({
+        //   appId: "428982",
+        //   channelUrl: "",
+        // });
       }
 
       _createClass(HomeComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
           return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-            var _this11 = this;
-
             return regeneratorRuntime.wrap(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
-                    DZ.ready(function (sdk_options) {
-                      console.log("DZ SDK is ready", sdk_options); // Load the charts data from the microservice
+                    _context.next = 2;
+                    return this.songsConfigService.songsList;
 
-                      _this11.deezerAPIService.initialize();
-                    }); // this.songsList = await this.songsConfigService.songsList.toPromise();
-                    // // Just takes first 6 index of array for ui
-                    // this.songsList = this.songsList.slice(0, 6);
-                    // this.initTopCharts();
-                    // this.initNewRelease();
-                    // this.initEvents();
-                    // this.initArtists();
-                    // this.initRetro();
-                    // this.initPlaylist();
-                    // this.initRadio();
-                    // this.initGenres();
-                    // // TODO: Create a parent observable to store the value of the initial API call.
-                    // // TODO: Create Objects to Initialize the various components
-                    // this.initTopDeezerCharts();
-                    // this.initDeezerArtists();
-                    // this.initDeezerPlaylist();
-                    // this.initDeezerPodcast();
+                  case 2:
+                    this.songsList = _context.sent;
+                    // Just takes first 6 index of array for ui
+                    this.songsList = this.songsList.slice(0, 6);
+                    this.initTopCharts();
+                    this.initNewRelease();
+                    this.initEvents();
+                    this.initArtists();
+                    this.initRetro();
+                    this.initPlaylist();
+                    this.initRadio();
+                    this.initGenres();
 
-                  case 1:
+                  case 12:
                   case "end":
                     return _context.stop();
                 }
               }
-            }, _callee);
+            }, _callee, this);
           }));
         }
       }, {
@@ -90036,28 +90027,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               while (1) {
                 switch (_context2.prev = _context2.next) {
                   case 0:
-                    this.loadingService.stopLoading(); // Get data from user with ID 5
+                    this.loadingService.stopLoading();
 
-                    DZ.api("/user/5", function (response) {
-                      console.log("Name of user id 5", response.name);
-                    }); // console.log(
-                    //   "ALBUMS -> ",
-                    //   await this.songsConfigService.fetch_TopTenAlbums().toPromise()
-                    // );
-                    // console.log(
-                    //   "ARTISTS -> ",
-                    //   await this.songsConfigService.fetch_TopTenArtist().toPromise()
-                    // );
-                    // console.log(
-                    //   "PLAYLIST  -> ",
-                    //   await this.songsConfigService.fetch_TopTenPlaylist().toPromise()
-                    // );
-                    // console.log(
-                    //   "PODCAST -> ",
-                    //   await this.songsConfigService.fetch_TopTenPodcast().toPromise()
-                    // );
-
-                  case 2:
+                  case 1:
                   case "end":
                     return _context2.stop();
                 }
@@ -90069,59 +90041,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "initTopCharts",
         value: function initTopCharts() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-            return regeneratorRuntime.wrap(function _callee3$(_context3) {
-              while (1) {
-                switch (_context3.prev = _context3.next) {
-                  case 0:
-                    _context3.next = 2;
-                    return this.songsConfigService.songsList.toPromise();
-
-                  case 2:
-                    _context3.t0 = _context3.sent;
-                    this.topCharts = {
-                      title: "Top Charts",
-                      subTitle: "Listen top chart",
-                      page: "/songs",
-                      items: _context3.t0
-                    };
-
-                  case 4:
-                  case "end":
-                    return _context3.stop();
-                }
-              }
-            }, _callee3, this);
-          }));
+          this.topCharts = {
+            title: "Top Charts",
+            subTitle: "Listen top chart",
+            page: "/songs",
+            items: this.songsConfigService.songsList
+          };
         } // Initialize new release music object for section
 
       }, {
         key: "initNewRelease",
         value: function initNewRelease() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-            return regeneratorRuntime.wrap(function _callee4$(_context4) {
-              while (1) {
-                switch (_context4.prev = _context4.next) {
-                  case 0:
-                    _context4.next = 2;
-                    return this.songsConfigService.songsList.toPromise();
-
-                  case 2:
-                    _context4.t0 = _context4.sent;
-                    this.newRelease = {
-                      title: "New Releases",
-                      subTitle: "Listen recently release music",
-                      page: "/songs",
-                      items: _context4.t0
-                    };
-
-                  case 4:
-                  case "end":
-                    return _context4.stop();
-                }
-              }
-            }, _callee4, this);
-          }));
+          this.newRelease = {
+            title: "New Releases",
+            subTitle: "Listen recently release music",
+            page: "/songs",
+            items: this.songsConfigService.songsList
+          };
         } // Initialize music events object for section
 
       }, {
@@ -90145,96 +90081,39 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "initRetro",
         value: function initRetro() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-            return regeneratorRuntime.wrap(function _callee5$(_context5) {
-              while (1) {
-                switch (_context5.prev = _context5.next) {
-                  case 0:
-                    _context5.next = 2;
-                    return this.songsConfigService.songsList.toPromise();
-
-                  case 2:
-                    _context5.t0 = _context5.sent;
-                    this.retro = {
-                      title: "Retro Classic",
-                      subTitle: "Old is gold",
-                      page: "/songs",
-                      items: _context5.t0
-                    };
-
-                  case 4:
-                  case "end":
-                    return _context5.stop();
-                }
-              }
-            }, _callee5, this);
-          }));
+          this.retro = {
+            title: "Retro Classic",
+            subTitle: "Old is gold",
+            page: "/songs",
+            items: this.songsConfigService.songsList
+          };
         } // Initialize music playlist object for section
 
       }, {
         key: "initPlaylist",
         value: function initPlaylist() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-            var playlistItems, _iterator, _step, playlistItem;
+          this.playlist = {
+            title: "Your Playlist",
+            subTitle: "You best to listen",
+            page: "/playlist",
+            items: this.playlistConfigService.playlist
+          }; // Add songs in playlist
 
-            return regeneratorRuntime.wrap(function _callee6$(_context6) {
-              while (1) {
-                switch (_context6.prev = _context6.next) {
-                  case 0:
-                    this.playlist = {
-                      title: "Your Playlist",
-                      subTitle: "You best to listen",
-                      page: "/playlist",
-                      items: this.playlistConfigService.playlist
-                    }; // Add songs in playlist
+          var playlistItems = this.playlist.items;
 
-                    playlistItems = this.playlist.items;
-                    _iterator = _createForOfIteratorHelper(playlistItems);
-                    _context6.prev = 3;
+          var _iterator = _createForOfIteratorHelper(playlistItems),
+              _step;
 
-                    _iterator.s();
-
-                  case 5:
-                    if ((_step = _iterator.n()).done) {
-                      _context6.next = 12;
-                      break;
-                    }
-
-                    playlistItem = _step.value;
-                    _context6.next = 9;
-                    return this.songsConfigService.songsList.toPromise();
-
-                  case 9:
-                    playlistItem.songs = _context6.sent;
-
-                  case 10:
-                    _context6.next = 5;
-                    break;
-
-                  case 12:
-                    _context6.next = 17;
-                    break;
-
-                  case 14:
-                    _context6.prev = 14;
-                    _context6.t0 = _context6["catch"](3);
-
-                    _iterator.e(_context6.t0);
-
-                  case 17:
-                    _context6.prev = 17;
-
-                    _iterator.f();
-
-                    return _context6.finish(17);
-
-                  case 20:
-                  case "end":
-                    return _context6.stop();
-                }
-              }
-            }, _callee6, this, [[3, 14, 17, 20]]);
-          }));
+          try {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              var playlistItem = _step.value;
+              playlistItem.songs = this.songsConfigService.songsList;
+            }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
+          }
         } // Initialize radio object for section
 
       }, {
@@ -90262,76 +90141,76 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "initDeezerArtists",
         value: function initDeezerArtists() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-            return regeneratorRuntime.wrap(function _callee7$(_context7) {
+          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+            return regeneratorRuntime.wrap(function _callee3$(_context3) {
               while (1) {
-                switch (_context7.prev = _context7.next) {
+                switch (_context3.prev = _context3.next) {
                   case 0:
-                    _context7.next = 2;
+                    _context3.next = 2;
                     return this.artistsConfigService.artistsListDeezer.toPromise();
 
                   case 2:
-                    _context7.t0 = _context7.sent;
+                    _context3.t0 = _context3.sent;
                     this.deezerTopartists = {
                       title: "Featured Artists",
                       subTitle: "Select you best to listen",
                       page: "/artists",
-                      items: _context7.t0
+                      items: _context3.t0
                     };
 
                   case 4:
                   case "end":
-                    return _context7.stop();
+                    return _context3.stop();
                 }
               }
-            }, _callee7, this);
+            }, _callee3, this);
           }));
         } // Initiailize with top charts object from deezer api
 
       }, {
         key: "initTopDeezerCharts",
         value: function initTopDeezerCharts() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-            return regeneratorRuntime.wrap(function _callee8$(_context8) {
+          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+            return regeneratorRuntime.wrap(function _callee4$(_context4) {
               while (1) {
-                switch (_context8.prev = _context8.next) {
+                switch (_context4.prev = _context4.next) {
                   case 0:
-                    _context8.prev = 0;
-                    _context8.next = 3;
-                    return this.songsConfigService.songsList.toPromise();
+                    _context4.prev = 0;
+                    _context4.next = 3;
+                    return this.songsConfigService.songsList;
 
                   case 3:
-                    _context8.t0 = _context8.sent;
+                    _context4.t0 = _context4.sent;
                     this.topDeezerCharts = {
                       title: "Top Charts",
                       subTitle: "Listen to top ten artists",
                       page: "/songs",
-                      items: _context8.t0
+                      items: _context4.t0
                     };
-                    _context8.next = 10;
+                    _context4.next = 10;
                     break;
 
                   case 7:
-                    _context8.prev = 7;
-                    _context8.t1 = _context8["catch"](0);
-                    console.log("initTopDeezerCharts:- ".concat(_context8.t1));
+                    _context4.prev = 7;
+                    _context4.t1 = _context4["catch"](0);
+                    console.log("initTopDeezerCharts:- ".concat(_context4.t1));
 
                   case 10:
                   case "end":
-                    return _context8.stop();
+                    return _context4.stop();
                 }
               }
-            }, _callee8, this, [[0, 7]]);
+            }, _callee4, this, [[0, 7]]);
           }));
         } // Initialize pod cast object for section
 
       }, {
         key: "initDeezerPodcast",
         value: function initDeezerPodcast() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-            return regeneratorRuntime.wrap(function _callee9$(_context9) {
+          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+            return regeneratorRuntime.wrap(function _callee5$(_context5) {
               while (1) {
-                switch (_context9.prev = _context9.next) {
+                switch (_context5.prev = _context5.next) {
                   case 0:
                     this.podcast = {
                       title: "Radio",
@@ -90342,22 +90221,22 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
                   case 1:
                   case "end":
-                    return _context9.stop();
+                    return _context5.stop();
                 }
               }
-            }, _callee9, this);
+            }, _callee5, this);
           }));
         } // Initialize music playlist object for section
 
       }, {
         key: "initDeezerPlaylist",
         value: function initDeezerPlaylist() {
-          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
+          return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
             var playlistItems, _iterator2, _step2, playlistItem;
 
-            return regeneratorRuntime.wrap(function _callee10$(_context10) {
+            return regeneratorRuntime.wrap(function _callee6$(_context6) {
               while (1) {
-                switch (_context10.prev = _context10.next) {
+                switch (_context6.prev = _context6.next) {
                   case 0:
                     this.deezerPlaylist = {
                       title: "Your Playlist",
@@ -90368,50 +90247,50 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
                     playlistItems = this.deezerPlaylist.items;
                     _iterator2 = _createForOfIteratorHelper(playlistItems);
-                    _context10.prev = 3;
+                    _context6.prev = 3;
 
                     _iterator2.s();
 
                   case 5:
                     if ((_step2 = _iterator2.n()).done) {
-                      _context10.next = 12;
+                      _context6.next = 12;
                       break;
                     }
 
                     playlistItem = _step2.value;
-                    _context10.next = 9;
-                    return this.songsConfigService.songsList.toPromise();
+                    _context6.next = 9;
+                    return this.songsConfigService.songsList;
 
                   case 9:
-                    playlistItem.songs = _context10.sent;
+                    playlistItem.songs = _context6.sent;
 
                   case 10:
-                    _context10.next = 5;
+                    _context6.next = 5;
                     break;
 
                   case 12:
-                    _context10.next = 17;
+                    _context6.next = 17;
                     break;
 
                   case 14:
-                    _context10.prev = 14;
-                    _context10.t0 = _context10["catch"](3);
+                    _context6.prev = 14;
+                    _context6.t0 = _context6["catch"](3);
 
-                    _iterator2.e(_context10.t0);
+                    _iterator2.e(_context6.t0);
 
                   case 17:
-                    _context10.prev = 17;
+                    _context6.prev = 17;
 
                     _iterator2.f();
 
-                    return _context10.finish(17);
+                    return _context6.finish(17);
 
                   case 20:
                   case "end":
-                    return _context10.stop();
+                    return _context6.stop();
                 }
               }
-            }, _callee10, this, [[3, 14, 17, 20]]);
+            }, _callee6, this, [[3, 14, 17, 20]]);
           }));
         }
       }]);
@@ -90676,7 +90555,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     var SongDetailsComponent = /*#__PURE__*/function () {
       function SongDetailsComponent(route, loadingService, songsConfigService, audioPlayerService) {
-        var _this12 = this;
+        var _this11 = this;
 
         _classCallCheck(this, SongDetailsComponent);
 
@@ -90686,9 +90565,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.audioPlayerService = audioPlayerService;
         this.routeSubscription = this.route.params.subscribe(function (param) {
           if (param.id) {
-            _this12.songId = parseInt(param.id, 10);
+            _this11.songId = parseInt(param.id, 10);
 
-            _this12.getSongDetails();
+            _this11.getSongDetails();
           }
         });
       }
@@ -91298,7 +91177,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(LineTabsDirective, [{
         key: "ngAfterViewInit",
         value: function ngAfterViewInit() {
-          var _this13 = this;
+          var _this12 = this;
 
           // Add a line indicator in tabs
           this.indicatorLine = this.renderer.createElement('span');
@@ -91309,7 +91188,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
           this.navLink$ = this.el.nativeElement.querySelectorAll('.nav-link');
           this.linkClick = this.navLink$.forEach(function (link) {
-            link.addEventListener('click', _this13.navLinkClick.bind(_this13));
+            link.addEventListener('click', _this12.navLinkClick.bind(_this12));
           });
         }
       }, {

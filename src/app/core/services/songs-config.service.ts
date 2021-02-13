@@ -30,19 +30,10 @@ export class SongsConfigService {
 
   source$: Observable<Tracks>;
 
-  constructor(private chartsService: DeezerService) {
-    this.initialize();
-  }
-
-  initialize() {
-    this.source$ = this.chartsService.chartsObservable$.pipe(pluck("tracks"));
-    this.source$.subscribe((data: any) =>
-      console.log("Chart Observable - ", data)
-    );
-  }
+  constructor(private chartsService: DeezerService) {}
 
   get songsList() {
-    return this.fetchTracks();
+    return this.songsConfig.config.items;
   }
 
   get defaultSong() {
@@ -56,7 +47,7 @@ export class SongsConfigService {
 
   private fetchTracks(): Observable<object[]> {
     try {
-      return this.source$.pipe(
+      return this.chartsService.chartsObservable$.pipe(pluck("tracks")).pipe(
         map((tracks: any) => tracks.data),
         switchMap((data: any[]) => {
           return of(
