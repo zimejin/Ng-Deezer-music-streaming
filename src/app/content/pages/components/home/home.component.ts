@@ -129,9 +129,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private playlistConfigService: PlaylistConfigService,
     private radioConfigService: RadioConfigService,
     private genresConfigService: GenresConfigService,
-    private eventsConfigService: EventsConfigService,
-    private deezerAPIService: DeezerService
-  ) {}
+    private eventsConfigService: EventsConfigService  ) {}
 
   async ngOnInit() {
     this.songsList = await this.songsConfigService.songsList;
