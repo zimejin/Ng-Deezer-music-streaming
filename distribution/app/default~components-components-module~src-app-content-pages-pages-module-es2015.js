@@ -73928,8 +73928,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_services_radio_config_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../core/services/radio-config.service */ "./src/app/core/services/radio-config.service.ts");
 /* harmony import */ var _core_services_genres_config_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../core/services/genres-config.service */ "./src/app/core/services/genres-config.service.ts");
 /* harmony import */ var _core_services_events_config_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../core/services/events-config.service */ "./src/app/core/services/events-config.service.ts");
-/* harmony import */ var src_app_core_services_deezer_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/core/services/deezer-service */ "./src/app/core/services/deezer-service.ts");
-
 
 
 
@@ -73940,7 +73938,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let HomeComponent = class HomeComponent {
-    constructor(loadingService, artistsConfigService, songsConfigService, playlistConfigService, radioConfigService, genresConfigService, eventsConfigService, deezerAPIService) {
+    constructor(loadingService, artistsConfigService, songsConfigService, playlistConfigService, radioConfigService, genresConfigService, eventsConfigService) {
         this.loadingService = loadingService;
         this.artistsConfigService = artistsConfigService;
         this.songsConfigService = songsConfigService;
@@ -73948,7 +73946,6 @@ let HomeComponent = class HomeComponent {
         this.radioConfigService = radioConfigService;
         this.genresConfigService = genresConfigService;
         this.eventsConfigService = eventsConfigService;
-        this.deezerAPIService = deezerAPIService;
         this.carouselArrowPosClass1 = "arrow-pos-1";
         this.carouselArrowPosClass2 = "arrow-pos-2";
         this.carouselArrowPosClass3 = "arrow-pos-3";
@@ -73962,10 +73959,6 @@ let HomeComponent = class HomeComponent {
         this.genres = {};
         this.mainEvent = {};
         this.secondaryEvents = [];
-        // DZ.init({
-        //   appId: "428982",
-        //   channelUrl: "",
-        // });
     }
     ngOnInit() {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
@@ -74122,8 +74115,7 @@ HomeComponent.ctorParameters = () => [
     { type: _core_services_playlist_config_service__WEBPACK_IMPORTED_MODULE_5__["PlaylistConfigService"] },
     { type: _core_services_radio_config_service__WEBPACK_IMPORTED_MODULE_6__["RadioConfigService"] },
     { type: _core_services_genres_config_service__WEBPACK_IMPORTED_MODULE_7__["GenresConfigService"] },
-    { type: _core_services_events_config_service__WEBPACK_IMPORTED_MODULE_8__["EventsConfigService"] },
-    { type: src_app_core_services_deezer_service__WEBPACK_IMPORTED_MODULE_9__["DeezerService"] }
+    { type: _core_services_events_config_service__WEBPACK_IMPORTED_MODULE_8__["EventsConfigService"] }
 ];
 HomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -74654,6 +74646,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
 /* harmony import */ var _directives_line_tabs_directive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./directives/line-tabs.directive */ "./src/app/core/directives/line-tabs.directive.ts");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm2015/store.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store */ "./src/app/core/store/index.ts");
+
+
 
 
 
@@ -74662,13 +74658,9 @@ let CoreModule = class CoreModule {
 };
 CoreModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-        imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"]],
-        declarations: [
-            _directives_line_tabs_directive__WEBPACK_IMPORTED_MODULE_3__["LineTabsDirective"]
-        ],
-        exports: [
-            _directives_line_tabs_directive__WEBPACK_IMPORTED_MODULE_3__["LineTabsDirective"]
-        ]
+        imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_4__["StoreModule"].forFeature("state", _store__WEBPACK_IMPORTED_MODULE_5__["reducers"])],
+        declarations: [_directives_line_tabs_directive__WEBPACK_IMPORTED_MODULE_3__["LineTabsDirective"]],
+        exports: [_directives_line_tabs_directive__WEBPACK_IMPORTED_MODULE_3__["LineTabsDirective"]],
     })
 ], CoreModule);
 

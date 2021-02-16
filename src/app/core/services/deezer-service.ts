@@ -4,6 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { tap } from "rxjs/operators";
 import { API_CHART_DATA_MODEL } from "../interfaces/app-interfaces";
+import { DeezerAPIState } from "../store/reducers/chart.reducers";
 
 const httpOptions = {
   headers: new HttpHeaders().set("Content-Type", "application/json"),
@@ -31,7 +32,7 @@ export class DeezerService {
     }
   }
 
-  private get chartItems(): Observable<API_CHART_DATA_MODEL> {
+  get chartItems(): Observable<DeezerAPIState> {
     const path = `${this.REST_API}/getCharts`;
     return this.http.get<API_CHART_DATA_MODEL>(path, httpOptions);
   }

@@ -89950,15 +89950,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var _core_services_events_config_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
     /*! ../../../../core/services/events-config.service */
     "./src/app/core/services/events-config.service.ts");
-    /* harmony import */
-
-
-    var src_app_core_services_deezer_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
-    /*! src/app/core/services/deezer-service */
-    "./src/app/core/services/deezer-service.ts");
 
     var HomeComponent = /*#__PURE__*/function () {
-      function HomeComponent(loadingService, artistsConfigService, songsConfigService, playlistConfigService, radioConfigService, genresConfigService, eventsConfigService, deezerAPIService) {
+      function HomeComponent(loadingService, artistsConfigService, songsConfigService, playlistConfigService, radioConfigService, genresConfigService, eventsConfigService) {
         _classCallCheck(this, HomeComponent);
 
         this.loadingService = loadingService;
@@ -89968,7 +89962,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.radioConfigService = radioConfigService;
         this.genresConfigService = genresConfigService;
         this.eventsConfigService = eventsConfigService;
-        this.deezerAPIService = deezerAPIService;
         this.carouselArrowPosClass1 = "arrow-pos-1";
         this.carouselArrowPosClass2 = "arrow-pos-2";
         this.carouselArrowPosClass3 = "arrow-pos-3";
@@ -89981,10 +89974,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.radio = {};
         this.genres = {};
         this.mainEvent = {};
-        this.secondaryEvents = []; // DZ.init({
-        //   appId: "428982",
-        //   channelUrl: "",
-        // });
+        this.secondaryEvents = [];
       }
 
       _createClass(HomeComponent, [{
@@ -90313,8 +90303,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         type: _core_services_genres_config_service__WEBPACK_IMPORTED_MODULE_7__["GenresConfigService"]
       }, {
         type: _core_services_events_config_service__WEBPACK_IMPORTED_MODULE_8__["EventsConfigService"]
-      }, {
-        type: src_app_core_services_deezer_service__WEBPACK_IMPORTED_MODULE_9__["DeezerService"]
       }];
     };
 
@@ -91121,13 +91109,25 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     var _directives_line_tabs_directive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ./directives/line-tabs.directive */
     "./src/app/core/directives/line-tabs.directive.ts");
+    /* harmony import */
+
+
+    var _ngrx_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! @ngrx/store */
+    "./node_modules/@ngrx/store/fesm2015/store.js");
+    /* harmony import */
+
+
+    var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    /*! ./store */
+    "./src/app/core/store/index.ts");
 
     var CoreModule = function CoreModule() {
       _classCallCheck(this, CoreModule);
     };
 
     CoreModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-      imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"]],
+      imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_4__["StoreModule"].forFeature("state", _store__WEBPACK_IMPORTED_MODULE_5__["reducers"])],
       declarations: [_directives_line_tabs_directive__WEBPACK_IMPORTED_MODULE_3__["LineTabsDirective"]],
       exports: [_directives_line_tabs_directive__WEBPACK_IMPORTED_MODULE_3__["LineTabsDirective"]]
     })], CoreModule);

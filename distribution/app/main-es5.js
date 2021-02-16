@@ -1015,31 +1015,42 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _core_services_deezer_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-    /*! ./core/services/deezer-service */
-    "./src/app/core/services/deezer-service.ts");
+    var _ngrx_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! @ngrx/store */
+    "./node_modules/@ngrx/store/fesm2015/store.js");
     /* harmony import */
 
 
     var _core_services_loading_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ./core/services/loading.service */
     "./src/app/core/services/loading.service.ts");
+    /* harmony import */
+
+
+    var _core_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! ./core/store */
+    "./src/app/core/store/index.ts");
 
     var AppComponent = /*#__PURE__*/function () {
-      function AppComponent(loadingService, deezerAPIService) {
+      function AppComponent(loadingService, store) {
         _classCallCheck(this, AppComponent);
 
         this.loadingService = loadingService;
-        this.deezerAPIService = deezerAPIService;
+        this.store = store;
         this.title = "ng-deezer";
-        this.loadingService.startLoading(); // Load the charts data from the microservice
+        this.loadingService.startLoading(); // Dispatch action to the store to load the featured tracks from deezer
 
-        this.deezerAPIService.initialize();
+        this.store.dispatch(Object(_core_store__WEBPACK_IMPORTED_MODULE_4__["LoadFeaturedTracks"])());
       }
 
       _createClass(AppComponent, [{
         key: "ngOnInit",
-        value: function ngOnInit() {}
+        value: function ngOnInit() {
+          this.chart$ = this.store.select("chart");
+          this.chart$.subscribe(function (state) {
+            return console.log("Chart State:: ", state);
+          });
+        }
       }]);
 
       return AppComponent;
@@ -1049,7 +1060,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return [{
         type: _core_services_loading_service__WEBPACK_IMPORTED_MODULE_3__["LoadingService"]
       }, {
-        type: _core_services_deezer_service__WEBPACK_IMPORTED_MODULE_2__["DeezerService"]
+        type: _ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"]
       }];
     };
 
@@ -1163,6 +1174,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var src_environments_environment__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
     /*! src/environments/environment */
     "./src/environments/environment.ts");
+    /* harmony import */
+
+
+    var _ngrx_effects__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
+    /*! @ngrx/effects */
+    "./node_modules/@ngrx/effects/fesm2015/effects.js");
+    /* harmony import */
+
+
+    var _core_store__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
+    /*! ./core/store */
+    "./src/app/core/store/index.ts");
 
     var AppModule = function AppModule() {
       _classCallCheck(this, AppModule);
@@ -1170,7 +1193,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
       declarations: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"], _content_layout_loader_loader_component__WEBPACK_IMPORTED_MODULE_6__["LoaderComponent"]],
-      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"], _content_layout_layout_module__WEBPACK_IMPORTED_MODULE_5__["LayoutModule"], _ngrx_store__WEBPACK_IMPORTED_MODULE_11__["StoreModule"].forRoot({}, {}), // Instrumentation must be imported after importing StoreModule (config is optional)
+      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"], _content_layout_layout_module__WEBPACK_IMPORTED_MODULE_5__["LayoutModule"], // Store modules
+      _ngrx_store__WEBPACK_IMPORTED_MODULE_11__["StoreModule"].forRoot(_core_store__WEBPACK_IMPORTED_MODULE_15__["reducers"]), _ngrx_effects__WEBPACK_IMPORTED_MODULE_14__["EffectsModule"].forRoot(_core_store__WEBPACK_IMPORTED_MODULE_15__["effects"]), // Instrumentation must be imported after importing StoreModule (config is optional)
       _ngrx_store_devtools__WEBPACK_IMPORTED_MODULE_12__["StoreDevtoolsModule"].instrument({
         maxAge: 25,
         logOnly: src_environments_environment__WEBPACK_IMPORTED_MODULE_13__["environment"].production
@@ -5759,6 +5783,434 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     SongsConfigService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
       providedIn: "root"
     })], SongsConfigService);
+    /***/
+  },
+
+  /***/
+  "./src/app/core/store/actions/chart.actions.ts":
+  /*!*****************************************************!*\
+    !*** ./src/app/core/store/actions/chart.actions.ts ***!
+    \*****************************************************/
+
+  /*! exports provided: LoadFeaturedTracks, SuccessLoadFeatureTracks, LoadFeatureFailed */
+
+  /***/
+  function srcAppCoreStoreActionsChartActionsTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "LoadFeaturedTracks", function () {
+      return LoadFeaturedTracks;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "SuccessLoadFeatureTracks", function () {
+      return SuccessLoadFeatureTracks;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "LoadFeatureFailed", function () {
+      return LoadFeatureFailed;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @ngrx/store */
+    "./node_modules/@ngrx/store/fesm2015/store.js");
+
+    var LoadFeaturedTracks = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createAction"])("[Deezer API] Load Featured Tracks");
+    var SuccessLoadFeatureTracks = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createAction"])("[Deezer API] Loading Featured Tracks Successful", Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["props"])());
+    var LoadFeatureFailed = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createAction"])("[Deezer API] Load Featured Tracks Failed", Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["props"])());
+    /***/
+  },
+
+  /***/
+  "./src/app/core/store/actions/index.ts":
+  /*!*********************************************!*\
+    !*** ./src/app/core/store/actions/index.ts ***!
+    \*********************************************/
+
+  /*! exports provided: LoadFeaturedTracks, SuccessLoadFeatureTracks, LoadFeatureFailed */
+
+  /***/
+  function srcAppCoreStoreActionsIndexTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _chart_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! ./chart.actions */
+    "./src/app/core/store/actions/chart.actions.ts");
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "LoadFeaturedTracks", function () {
+      return _chart_actions__WEBPACK_IMPORTED_MODULE_1__["LoadFeaturedTracks"];
+    });
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "SuccessLoadFeatureTracks", function () {
+      return _chart_actions__WEBPACK_IMPORTED_MODULE_1__["SuccessLoadFeatureTracks"];
+    });
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "LoadFeatureFailed", function () {
+      return _chart_actions__WEBPACK_IMPORTED_MODULE_1__["LoadFeatureFailed"];
+    });
+    /***/
+
+  },
+
+  /***/
+  "./src/app/core/store/effects/chart.effects.ts":
+  /*!*****************************************************!*\
+    !*** ./src/app/core/store/effects/chart.effects.ts ***!
+    \*****************************************************/
+
+  /*! exports provided: ChartsEffects */
+
+  /***/
+  function srcAppCoreStoreEffectsChartEffectsTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "ChartsEffects", function () {
+      return ChartsEffects;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @angular/core */
+    "./node_modules/@angular/core/fesm2015/core.js");
+    /* harmony import */
+
+
+    var _ngrx_effects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! @ngrx/effects */
+    "./node_modules/@ngrx/effects/fesm2015/effects.js");
+    /* harmony import */
+
+
+    var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    /*! rxjs */
+    "./node_modules/rxjs/_esm2015/index.js");
+    /* harmony import */
+
+
+    var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+    /*! rxjs/operators */
+    "./node_modules/rxjs/_esm2015/operators/index.js");
+    /* harmony import */
+
+
+    var _services_deezer_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+    /*! ../../services/deezer-service */
+    "./src/app/core/services/deezer-service.ts");
+    /* harmony import */
+
+
+    var _actions_chart_actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+    /*! ../actions/chart.actions */
+    "./src/app/core/store/actions/chart.actions.ts"); // Effect to load the featured chart items
+
+
+    var ChartsEffects = function ChartsEffects(actions$, deezerService) {
+      var _this8 = this;
+
+      _classCallCheck(this, ChartsEffects);
+
+      this.actions$ = actions$;
+      this.deezerService = deezerService;
+      this.loadFeaturedTracks$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_2__["createEffect"])(function () {
+        return _this8.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_2__["ofType"])(_actions_chart_actions__WEBPACK_IMPORTED_MODULE_6__["LoadFeaturedTracks"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["mergeMap"])(function () {
+          return _this8.deezerService.chartItems.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function (response) {
+            return _actions_chart_actions__WEBPACK_IMPORTED_MODULE_6__["SuccessLoadFeatureTracks"](response);
+          }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) {
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(_actions_chart_actions__WEBPACK_IMPORTED_MODULE_6__["LoadFeatureFailed"](error));
+          }));
+        }));
+      });
+    };
+
+    ChartsEffects.ctorParameters = function () {
+      return [{
+        type: _ngrx_effects__WEBPACK_IMPORTED_MODULE_2__["Actions"]
+      }, {
+        type: _services_deezer_service__WEBPACK_IMPORTED_MODULE_5__["DeezerService"]
+      }];
+    };
+
+    ChartsEffects = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()], ChartsEffects);
+    /***/
+  },
+
+  /***/
+  "./src/app/core/store/effects/index.ts":
+  /*!*********************************************!*\
+    !*** ./src/app/core/store/effects/index.ts ***!
+    \*********************************************/
+
+  /*! exports provided: effects, ChartsEffects */
+
+  /***/
+  function srcAppCoreStoreEffectsIndexTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "effects", function () {
+      return effects;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _chart_effects__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! ./chart.effects */
+    "./src/app/core/store/effects/chart.effects.ts");
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "ChartsEffects", function () {
+      return _chart_effects__WEBPACK_IMPORTED_MODULE_1__["ChartsEffects"];
+    });
+
+    var effects = [_chart_effects__WEBPACK_IMPORTED_MODULE_1__["ChartsEffects"]];
+    /***/
+  },
+
+  /***/
+  "./src/app/core/store/index.ts":
+  /*!*************************************!*\
+    !*** ./src/app/core/store/index.ts ***!
+    \*************************************/
+
+  /*! exports provided: LoadFeaturedTracks, SuccessLoadFeatureTracks, LoadFeatureFailed, effects, reducers, getAppState, ChartsEffects */
+
+  /***/
+  function srcAppCoreStoreIndexTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! ./actions */
+    "./src/app/core/store/actions/index.ts");
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "LoadFeaturedTracks", function () {
+      return _actions__WEBPACK_IMPORTED_MODULE_1__["LoadFeaturedTracks"];
+    });
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "SuccessLoadFeatureTracks", function () {
+      return _actions__WEBPACK_IMPORTED_MODULE_1__["SuccessLoadFeatureTracks"];
+    });
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "LoadFeatureFailed", function () {
+      return _actions__WEBPACK_IMPORTED_MODULE_1__["LoadFeatureFailed"];
+    });
+    /* harmony import */
+
+
+    var _effects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! ./effects */
+    "./src/app/core/store/effects/index.ts");
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "effects", function () {
+      return _effects__WEBPACK_IMPORTED_MODULE_2__["effects"];
+    });
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "ChartsEffects", function () {
+      return _effects__WEBPACK_IMPORTED_MODULE_2__["ChartsEffects"];
+    });
+    /* harmony import */
+
+
+    var _reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    /*! ./reducers */
+    "./src/app/core/store/reducers/index.ts");
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "reducers", function () {
+      return _reducers__WEBPACK_IMPORTED_MODULE_3__["reducers"];
+    });
+    /* harmony reexport (safe) */
+
+
+    __webpack_require__.d(__webpack_exports__, "getAppState", function () {
+      return _reducers__WEBPACK_IMPORTED_MODULE_3__["getAppState"];
+    });
+    /***/
+
+  },
+
+  /***/
+  "./src/app/core/store/reducers/chart.reducers.ts":
+  /*!*******************************************************!*\
+    !*** ./src/app/core/store/reducers/chart.reducers.ts ***!
+    \*******************************************************/
+
+  /*! exports provided: initialState, reducer */
+
+  /***/
+  function srcAppCoreStoreReducersChartReducersTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "initialState", function () {
+      return initialState;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "reducer", function () {
+      return reducer;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @ngrx/store */
+    "./node_modules/@ngrx/store/fesm2015/store.js");
+    /* harmony import */
+
+
+    var _actions_chart_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! ../actions/chart.actions */
+    "./src/app/core/store/actions/chart.actions.ts");
+
+    var initialState = {
+      albums: null,
+      artists: null,
+      playlists: null,
+      podcasts: null,
+      tracks: null
+    };
+    var chartsReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createReducer"])(initialState, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_chart_actions__WEBPACK_IMPORTED_MODULE_2__["LoadFeaturedTracks"], function (state) {
+      return Object.assign({}, state);
+    }));
+
+    function reducer(state, action) {
+      return chartsReducer(state, action);
+    }
+    /***/
+
+  },
+
+  /***/
+  "./src/app/core/store/reducers/index.ts":
+  /*!**********************************************!*\
+    !*** ./src/app/core/store/reducers/index.ts ***!
+    \**********************************************/
+
+  /*! exports provided: reducers, getAppState */
+
+  /***/
+  function srcAppCoreStoreReducersIndexTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "reducers", function () {
+      return reducers;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "getAppState", function () {
+      return getAppState;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @ngrx/store */
+    "./node_modules/@ngrx/store/fesm2015/store.js");
+    /* harmony import */
+
+
+    var _chart_reducers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! ./chart.reducers */
+    "./src/app/core/store/reducers/chart.reducers.ts");
+
+    var reducers = {
+      charts: _chart_reducers__WEBPACK_IMPORTED_MODULE_2__["reducer"]
+    };
+    var getAppState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createFeatureSelector"])("state");
     /***/
   },
 

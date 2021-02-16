@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
 import { DeezerService } from "./core/services/deezer-service";
 import { LoadingService } from "./core/services/loading.service";
+import { LoadFeaturedTracks } from "./core/store";
+import { DeezerAPIState } from "./core/store/reducers/chart.reducers";
 
 @Component({
   selector: "app-root",
@@ -13,16 +17,21 @@ import { LoadingService } from "./core/services/loading.service";
 })
 export class AppComponent implements OnInit {
   title = "ng-deezer";
+  chart$: Observable<DeezerAPIState>;
 
   constructor(
     private loadingService: LoadingService,
-    private deezerAPIService: DeezerService
+    private store: Store<{ chart: DeezerAPIState }>
   ) {
     this.loadingService.startLoading();
 
-    // Load the charts data from the microservice
-    this.deezerAPIService.initialize();
+    // Dispatch action to the store to load the featured tracks from deezer
+    this.store.dispatch(LoadFeaturedTracks());
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.chart$ = this.store.select("chart");
+
+    this.chart$.subscribe((state) => console.log("Chart State:: ", state));
+  }
 }
