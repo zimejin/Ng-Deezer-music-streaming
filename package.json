@@ -27,7 +27,7 @@
     "amplitudejs": "^5.0.2",
     "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
-    "chart.js": "^2.9.2",
+    "chart.js": "^2.9.4",
     "express": "^4.17.1",
     "helmet": "^4.4.1",
     "ionicons": "^4.6.3",
